@@ -1,0 +1,22 @@
+# temporary files of text editors
+*~
+
+*.class
+
+# Log file
+*.log
+
+# Package Files 
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.g
+
+
+# ignore all files, which are generated during build process
+**/target/
+
+# ignore IDE's files
+**/.idea/
+**/*.iml
