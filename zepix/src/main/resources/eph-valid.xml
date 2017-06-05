@@ -1,0 +1,30 @@
+<EPH verzia="3.0" xmlns="http://ekp.posta.sk/LOGIS/Formulare/Podaj_v03">
+  <InfoEPH>
+    <Mena>EUR</Mena>
+    <TypEPH>1</TypEPH>
+    <EPHID>PRV001</EPHID>
+    <Datum>20120117</Datum>
+    <PocetZasielok>1</PocetZasielok>
+    <DruhZasielky>4</DruhZasielky>
+    <Odosielatel>
+      <OdosielatelID>ABCDEFGHIJ</OdosielatelID>
+      <Meno>Bc. Peter Jonaštík</Meno>
+      <Organizacia>Signaturix, s.r.o.</Organizacia>
+      <Ulica>Záhradná 1</Ulica>
+      <Mesto>Zvolen</Mesto>
+      <PSC>96001</PSC>
+    </Odosielatel>
+  </InfoEPH> 
+  <Zasielky>
+    <Zasielka>
+      <Adresat>
+        <Meno>Xénia Tuctová</Meno>
+        <Organizacia>XYZ, a. s.</Organizacia>
+        <Ulica>Tržná 1</Ulica>
+        <Mesto>Banská Bystrica </Mesto>
+        <PSC>97401</PSC>
+      </Adresat>
+      <Info />
+    </Zasielka>
+  </Zasielky>
+</EPH>

@@ -4,21 +4,31 @@ import eu.europa.esig.dss.*;
 import eu.europa.esig.dss.token.AbstractSignatureTokenConnection;
 import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
 import eu.europa.esig.dss.token.Pkcs12SignatureToken;
+import eu.europa.esig.dss.token.SignatureTokenConnection;
 import eu.europa.esig.dss.validation.CommonCertificateVerifier;
+import eu.europa.esig.dss.xades.DSSReference;
+import eu.europa.esig.dss.xades.DSSTransform;
 import eu.europa.esig.dss.xades.XAdESSignatureParameters;
 import eu.europa.esig.dss.xades.signature.XAdESService;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.xml.crypto.dsig.CanonicalizationMethod;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class DssTest
 {
 
     DSSDocument toSignDocument;
 
-    AbstractSignatureTokenConnection signingToken;
+    SignatureTokenConnection signingToken;
     DSSPrivateKeyEntry privateKey;
 
     @Test
@@ -38,14 +48,20 @@ public class DssTest
 
         // Preparing parameters for the XAdES signature
         XAdESSignatureParameters parameters = new XAdESSignatureParameters();
-        // We choose the level of the signature (-B, -T, -LT, -LTA).
         parameters.setSignatureLevel(SignatureLevel.XAdES_BASELINE_B);
-        // We choose the type of the signature packaging (ENVELOPED, ENVELOPING, DETACHED).
         parameters.setSignaturePackaging(SignaturePackaging.ENVELOPED);
         // We set the digest algorithm to use with the signature algorithm. You must use the
         // same parameter when you invoke the method sign on the token. The default value is SHA256
-        parameters.setDigestAlgorithm(DigestAlgorithm.SHA256);
+        parameters.setDigestAlgorithm(DigestAlgorithm.SHA1);
 
+        parameters.bLevel().setSigningDate(parseDate("2017-03-29 13:39:29"));
+
+        Policy policy = new Policy();
+        policy.setId("1.3.158.36061701.1.2.2");
+        policy.setDigestAlgorithm(DigestAlgorithm.SHA256);
+        policy.setDigestValue("C876D4CA4A875295C838244A40B422CC9ECA3BB397E0E0E6CB8D6242F37F8A9F".getBytes());
+
+        parameters.bLevel().setSignaturePolicy(policy);
 
         // We set the signing certificate
         parameters.setSigningCertificate(privateKey.getCertificate());
@@ -72,11 +88,20 @@ public class DssTest
         DSSDocument signedDocument = service.signDocument(toSignDocument, parameters, signatureValue);
 
          try {
-             signedDocument.save("src/test/resources/signedXmlXadesB.xml");
+             signedDocument.save("src/test/resources/eph-signed.xml");
          } catch (IOException e) {
              e.printStackTrace();
          }
 
+    }
+
+    private Date parseDate(String date) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return format.parse(date);
+        } catch (ParseException e) {
+            throw new IllegalStateException();
+        }
     }
 
     private void prepareXmlDoc() {
